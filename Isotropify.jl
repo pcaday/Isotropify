@@ -1,12 +1,10 @@
-#module Isotropify
+module Isotropify
 
-include("Grids.jl")
-include("ScatteredInterpolation.jl")
 using Grids, ScatteredInterpolation
 
 
-#export firstderivatives, secondderivatives, laplacebeltramidirichlet, scalarcurvature,
-#       isotropify
+export firstderivatives, secondderivatives, laplacebeltramidirichlet, scalarcurvature,
+       isotropify, isotropify2
 
 # 2D anisotropic metrics are represented as 3-tuples of arrays
 #   g = (g_11,g_12,g_22)
@@ -64,7 +62,9 @@ function interioridentity(grid::RegularGrid)
 end
 
 "Operators that are zero on interior grid points and identity on the boundary"
-function boundaryrestriction(g::RegularGrid)
+function boundaryrestriction(grid::RegularGrid)
+    nx,ny = size(grid)
+    
     Bx = sparse([1,nx], [1,nx], [1.,1.], nx, nx)      # Boundary operators, for boundary conditions
     By = sparse([1,ny], [1,ny], [1.,1.], ny, ny)
     
@@ -222,6 +222,7 @@ function isotropify2(g, grid::RegularGrid)
     # Solve Laplace-Beltrami equations for them.
     Δ = laplacebeltramidirichlet(g,grid)
     x,y = vars(grid)
+    nx,ny = size(grid)
     
     # First X:
     z = zeros(g11)
@@ -267,4 +268,4 @@ function isotropify2(g, grid::RegularGrid)
 end
 
 
-#end
+end

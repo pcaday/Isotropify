@@ -28,7 +28,15 @@ unsafe_floor{T<:Integer}(::Type{T}, x::AbstractFloat) = unsafe_trunc(T,floor(x))
 unsafe_ceil{ T<:Integer}(::Type{T}, x::AbstractFloat) = unsafe_trunc(T,ceil(x))
 
 
-"""Interpolate scattered data onto a regular grid."""
+"""
+
+    scatteredinterpolate(X,Y,V,x,y)
+
+Interpolate 2D scattered data onto a regular grid. Inputs (X,Y,V) are vectors holding the
+coordinates and values of the scattered data points. The regular grid is specified by
+ranges (x,y).
+
+"""
 function scatteredinterpolate(X::AbstractVector, Y::AbstractVector, V::AbstractVector,
                               x::Range, y::Range)
     # Validate arguments
